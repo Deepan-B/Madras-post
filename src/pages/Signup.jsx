@@ -136,7 +136,7 @@ const Signup = () => {
                   className="w-full bg-blue-400 text-white text-[20px] leading-[30px] rounded-lg px-4 py-3"
                 >
                   {loading ? (
-                    <HashLoader size={35} color="#ffffff" />
+                    <HashLoader size={35} className="text-green-500" />
                   ) : (
                     `Sign Up`
                   )}

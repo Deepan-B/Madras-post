@@ -1,0 +1,38 @@
+import requests
+from bs4 import BeautifulSoup
+
+# URL of the website to scrape
+url = "https://www.indiapost.gov.in/vas/Pages/IndiaPostHome.aspx"
+
+# Send a GET request to the website
+response = requests.get(url)
+
+# Check if the request was successful
+if response.status_code == 200:
+    # Parse the HTML content using BeautifulSoup
+    soup = BeautifulSoup(response.content, 'html.parser')
+    
+    # Find the div with the class 'news_detail'
+    tab_content_divs = soup.find_all('div', class_='news_detail')
+    
+    # Loop through each div
+    i = 1
+    for tab_content in tab_content_divs:
+        # Find all 'a' tags within the div
+        a_tags = tab_content.find_all('a')
+        
+        # Ensure there are at least two 'a' tags
+        if len(a_tags) >= 2:
+            # Get the href attribute from the first 'a' tag
+            link_href = a_tags[0].get('href', 'No href attribute')
+            
+            # Get the aria-label attribute from the second 'a' tag
+            aria_label = a_tags[1].get('aria-label', 'No aria-label attribute')
+            link_title = a_tags[0].get('title', 'No title attribute')
+            
+            # Print the SQL insert statement
+            print(f"INSERT INTO NEWS(news_id, news_info, news_type, news_link) "
+                  f"VALUES({i}, '{link_title}','{aria_label}',  'https://www.indiapost.gov.in{link_href}');")
+            i += 1
+else:
+    print(f"Failed to retrieve the webpage. Status code: {response.status_code}")
