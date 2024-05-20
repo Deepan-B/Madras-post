@@ -1,0 +1,20 @@
+.datatable th {
+  background: #04aa6d;
+}
+.datatable tr:hover {
+  background-color: #ddd;
+}
+.datatable td,
+th {
+  vertical-align: top;
+  padding: 2px;
+  border: 1.5px solid #ddd;
+}
+.datatable tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+.datatable {
+  /* display: none; */
+  margin: auto;
+  max-width: max-content;
+}
