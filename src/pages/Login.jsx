@@ -1,11 +1,10 @@
 import { useContext, useState } from "react";
-import { Link , useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { BASE_URL } from "../../config";
-import { toast } from "react-toastify"
+import { toast } from "react-toastify";
 import { authContext } from "../../context/AuthContext.jsx";
 import HashLoader from "react-spinners/HashLoader";
-import logimg from "../assets/login.jpeg"
-
+import logimg from "../assets/login.jpeg";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -13,20 +12,18 @@ const Login = () => {
     password: "",
   });
 
-  const [loading, setLoading] = useState(false)
-  const navigate = useNavigate()
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-  const {dispatch} = useContext(authContext)
+  const { dispatch } = useContext(authContext);
 
   const handleFormDataChange = async (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-
-  const submitHandler  = async (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
     setLoading(true);
-    
 
     try {
       const res = await fetch(`${BASE_URL}/auth/login`, {
@@ -43,13 +40,16 @@ const Login = () => {
       //   throw new Error(result.message);
       // }
 
+      console.log(result);
+
       dispatch({
-        type: 'LOGIN_SUCCESS',
+        type: "LOGIN_SUCCESS",
         payload: {
           user: result.data,
           token: result.token,
-        }
-      })
+          type: result.data.type,
+        },
+      });
 
       setLoading(false);
       toast.success(result.message);
@@ -62,8 +62,11 @@ const Login = () => {
   };
 
   return (
-    <section className="px-5 lg:px-0" >
-      <div className="w-full max-w-[570px] mx-auto rounded-lg shadow-md md:p-10" style={{backgroundImage: `url(${logimg})`}}>
+    <section className="px-5 lg:px-0 my-12">
+      <div
+        className="w-full max-w-[570px] mx-auto rounded-lg shadow-md md:p-10"
+        style={{ backgroundImage: `url(${logimg})` }}
+      >
         <h3 className="text-headingColor text-[22px] leading-9 font-bold mb-10">
           <span className="text-primaryColor">Welcome</span> to Postage
         </h3>
@@ -99,16 +102,21 @@ const Login = () => {
               type="submit"
               className="text-white text-[20px] leading-[30px] rounded-lg px-2 py-3 bg-blue-600 "
             >
-              {loading ? <HashLoader size={25} color="fff"/>  : 'Login'}
+              {loading ? <HashLoader size={25} color="fff" /> : "Login"}
             </button>
           </div>
 
-          <p className="mt-5 text-textColor text-center ">
-            Don&apos;t have an Account?{" "}
-            <Link to="/register" className="text-white rounded-lg bg-orange-400 px-2 py-3  text-primaryColor font-medium ml-1">
+          <div className="flex items-center justify-center">
+            <p className=" text-white text-center bg-blue-400 w-max">
+              Don&apos;t have an Account?{" "}
+            </p>
+            <Link
+              to="/register"
+              className="text-white rounded-lg bg-orange-400 px-1  md:px-2 md:py-3 font-medium ml-1"
+            >
               Sign Up
             </Link>
-          </p>
+          </div>
         </form>
       </div>
     </section>
