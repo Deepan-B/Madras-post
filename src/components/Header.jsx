@@ -68,8 +68,8 @@ const header = () => {
                     type === "admin"
                       ? "/admin/profile/me"
                       : type === "postoffice"
-                      ? "/postoffice/profile/me"
-                      : "/users/profile/me"
+                      ? `/postoffice/${user.id}/podashboard`
+                      : `/hub/${user.id}/hubdashboard`
                   }`}
                 >
                   {user.photo ? (

@@ -18,7 +18,7 @@ const Findpin = () => {
   };
 
   const submitHandler = async () => {
-    setLoading(false);
+    setLoading(true);
 
     try {
       const res = await fetch(`${BASE_URL}/post-office/find`, {
@@ -34,8 +34,9 @@ const Findpin = () => {
         throw new Error(result.message);
       }
 
-      setData(Object.values(result.data));
+      setData(result.data);
       setLoading(false);
+      console.log(data);
       toast.success(result.message);
     } catch (err) {
       toast.error(err.message);
@@ -44,7 +45,7 @@ const Findpin = () => {
   };
 
   const resetHandler = () => {
-    setFormData({ ipType: "", value: "" }); 
+    setFormData({ ipType: "", value: "" });
     setData([]);
   };
 
@@ -53,10 +54,6 @@ const Findpin = () => {
       {
         Header: "Pincode",
         accessor: "pincode", // Change this to match your data structure
-      },
-      {
-        Header: "Hub Name",
-        accessor: "hub_name", // Change this to match your data structure
       },
       {
         Header: "Post Office Id",
@@ -153,7 +150,6 @@ const Findpin = () => {
                     }}
                   >
                     <option value="">Select</option>
-                    <option value="hub_name">Hub Name</option>
                     <option value="post_office_id">Post Office Id</option>
                     <option value="main_post">Main Post Office</option>
                     <option value="sub_post">Post Office</option>

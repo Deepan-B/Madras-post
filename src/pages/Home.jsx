@@ -16,15 +16,16 @@ import { BASE_URL } from "../../config";
 const Home = () => {
   const [parcel_id, setParcelid] = useState("");
   const [loading, setLoading] = useState(false);
-  // const { p1, h1, h2, p2, pstatus } = res;
 
-  const p1 = "new", h1 = "sdds", h2 = "adasadd", p2 = "sdfwsd" , pstatusnum = 3;
-
+  const p1 = "new",
+    h1 = "sdds",
+    h2 = "adasadd",
+    p2 = "sdfwsd",
+    pstatusnum = 3;
 
   const handleChange = (e) => {
     setParcelid(e.target.value);
   };
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -54,7 +55,7 @@ const Home = () => {
       setLoading(false);
     }
 
-    setLoading(false)
+    setLoading(false);
   };
 
   return (
@@ -68,7 +69,10 @@ const Home = () => {
             fontFamily: "Poetsen One",
           }}
         >
-          <div className="absolute w-full mt-[38px] md:mt-0" style={{WebkitTextStroke: "2px black" , color : "transparent"}}>
+          <div
+            className="absolute w-full mt-[38px] md:mt-0"
+            style={{ WebkitTextStroke: "2px black", color: "transparent" }}
+          >
             <h1 className="text-5xl md:text-7xl xl:text-8xl text-center md:text-left font-medium md:ml-5 md:mt-4">
               Time to Revolutionize
             </h1>
@@ -108,37 +112,48 @@ const Home = () => {
           </form>
         </div>
         <div className="border-4 h-full md:w-2/3 flex items-center">
-        {loading ? (
+          {loading ? (
             <div className="flex items-center justify-center h-full">
               <HashLoader size={50} color={"#36d7b7"} loading={loading} />
             </div>
           ) : (
-            <Timeline position="alternate"
-            className="text-[20px]" >
+            <Timeline position="alternate" className="text-[20px]">
               <TimelineItem>
                 <TimelineSeparator>
-                  <TimelineDot variant={pstatusnum < 1 ? "outlined" : "default"} color="secondary" />
+                  <TimelineDot
+                    variant={pstatusnum < 1 ? "outlined" : "default"}
+                    color="secondary"
+                  />
                   <TimelineConnector />
                 </TimelineSeparator>
                 <TimelineContent>{p1}</TimelineContent>
               </TimelineItem>
               <TimelineItem>
                 <TimelineSeparator>
-                  <TimelineDot variant={pstatusnum < 2 ? "outlined" : "default"} color="primary"/>
+                  <TimelineDot
+                    variant={pstatusnum < 2 ? "outlined" : "default"}
+                    color="primary"
+                  />
                   <TimelineConnector />
                 </TimelineSeparator>
                 <TimelineContent>{h1}</TimelineContent>
               </TimelineItem>
               <TimelineItem>
                 <TimelineSeparator>
-                  <TimelineDot variant={pstatusnum < 3 ? "outlined" : "default"} color="primary" />
+                  <TimelineDot
+                    variant={pstatusnum < 3 ? "outlined" : "default"}
+                    color="primary"
+                  />
                   <TimelineConnector />
                 </TimelineSeparator>
                 <TimelineContent>{h2}</TimelineContent>
               </TimelineItem>
               <TimelineItem>
                 <TimelineSeparator>
-                  <TimelineDot variant={pstatusnum < 4 ? "outlined" : "default"} color="primary" />
+                  <TimelineDot
+                    variant={pstatusnum < 4 ? "outlined" : "default"}
+                    color="primary"
+                  />
                 </TimelineSeparator>
                 <TimelineContent>{p2}</TimelineContent>
               </TimelineItem>
@@ -187,4 +202,3 @@ const Home = () => {
 };
 
 export default Home;
-

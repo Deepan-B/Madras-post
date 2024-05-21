@@ -60,9 +60,9 @@ const routes = () => {
         element={
           <ProtectedRoutes allowedRoles={["hubofficer", "admin"]}>
             <Routes>
-              <Route path="hubdashboard" element={<Hubdashboard />} />
-              <Route path="hubupdate" element={<Hubupdate />} />
-              <Route path="hubhistory" element={<HubHistory />} />
+              <Route path="/hubdashboard" element={<Hubdashboard />} />
+              <Route path="/hubupdate" element={<Hubupdate />} />
+              <Route path="/hubhistory" element={<HubHistory />} />
             </Routes>
           </ProtectedRoutes>
         }
