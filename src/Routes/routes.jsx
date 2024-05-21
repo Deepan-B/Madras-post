@@ -41,8 +41,8 @@ const routes = () => {
       <Route path="/schemes" element={<Schemes />} />
       <Route path="/news" element={<News />} />
       <Route path="/postage-calculator" element={<PostageCalculator />} />
-      <Route path="/findpost" element={<Findpost />} />
-      <Route path="/findpin" element={<Findpin />} />
+      <Route path="/post-office-locator" element={<Findpost />} />
+      <Route path="/find-pincode" element={<Findpin />} />
       <Route path="/hubdashboard" element={<Hubdashboard />} />
       <Route path="/hubupdate" element={<Hubupdate />} />
       <Route path="/hubhistory" element={<HubHistory />} />
