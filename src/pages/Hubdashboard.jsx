@@ -1,12 +1,12 @@
 import "./Postoffice.css";
 
 function Hubdashboard() {
+
   let parcelsSent = 3;
   let parcelsReceived = 2;
   let HubName = "Guindy";
   let HubId = 2323;
   let HubPincode = 600012;
-  console.log("NaandhaandaQ!");
 
   return (
     <>

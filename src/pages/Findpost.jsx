@@ -6,14 +6,13 @@ import "./table.css";
 import { HashLoader } from "react-spinners";
 
 const Findpost = () => {
-  let vari ;
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({ key: "", value: "" });
 
-
   const makenull = () => {
     setFormData({ key: "", value: "" });
+    setData([]);
   };
 
   const handleFormDataChange = (e) => {
@@ -26,7 +25,7 @@ const Findpost = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
     setLoading(true);
-  
+
     try {
       const res = await fetch(`${BASE_URL}/post-office/find`, {
         method: "post",
@@ -35,16 +34,13 @@ const Findpost = () => {
         },
         body: JSON.stringify(formData),
       });
-  
+
       const result = await res.json();
       if (!res.ok) {
         throw new Error(result.message);
       }
-  
-      // Assuming your API response data is an array of objects, you can directly set it to state
-      setData(result.data);
-      vari = result.data
-      console.log(data);
+
+      setData(Object.values(result.data));
       setLoading(false);
       toast.success(result.message);
     } catch (err) {
@@ -52,22 +48,41 @@ const Findpost = () => {
       setLoading(false);
     }
   };
-  
-  const columnss = useMemo(
+
+  const columns = useMemo(
     () => [
       {
+        Header: "Pincode",
+        accessor: "pincode", // Change this to match your data structure
+      },
+      {
+        Header: "Hub Name",
+        accessor: "hub_name", // Change this to match your data structure
+      },
+      {
+        Header: "Post Office Id",
+        accessor: "post_office_id", // Change this to match your data structure
+      },
+      {
+        Header: "Main Post Office Name",
+        accessor: "main_post", // Change this to match your data structure
+      },
+      {
+        Header: "Post Office Name",
+        accessor: "sub_post", // Change this to match your data structure
+      },
+      {
         Header: "Phone Number",
-        accessor: "phone_no",
+        accessor: "phone_no", // Change this to match your data structure
       },
     ],
     []
   );
 
-  const columns = useMemo(() => columnss, []);
-  const tableInst = useTable({ columns, vari });
+  const tableInstance = useTable({ columns, data });
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    tableInst;
+    tableInstance;
 
   return (
     <>
@@ -138,12 +153,8 @@ const Findpost = () => {
                       borderRadius: "2px",
                     }}
                   >
-                    <option value="Select">Select</option>
-                    <option value="main_post">Hub Name</option>
-                    <option value="post_office_id">Post Office Id</option>
+                    <option value="">Select</option>
                     <option value="main_post">Main Post Office</option>
-                    <option value="sub_post">Sub Post Office</option>
-                    <option value="phone_no">Phone Number</option>
                     <option value="pincode">Pin Code</option>
                   </select>
                 </td>
@@ -214,18 +225,14 @@ const Findpost = () => {
           </button>
         </div>
       </div>
-      {loading ? (
-        <div className="loader">
-          <HashLoader size={50} color={"#36d7b7"} loading={loading} />
-        </div>
-      ) : (
+      {data.length > 0 ? (
         <div className="datatable">
           <table {...getTableProps()}>
             <thead className="thead">
               {headerGroups.map((headerGroup, index) => (
                 <tr key={index} {...headerGroup.getHeaderGroupProps()}>
-                  {headerGroup.headers.map((column, index) => (
-                    <th key={index} {...column.getHeaderProps()}>
+                  {headerGroup.headers.map((column) => (
+                    <th key={Date.now()} {...column.getHeaderProps()}>
                       {column.render("Header")}
                     </th>
                   ))}
@@ -233,13 +240,13 @@ const Findpost = () => {
               ))}
             </thead>
             <tbody {...getTableBodyProps()}>
-              {rows.map((row, index) => {
+              {rows.map((row) => {
                 prepareRow(row);
                 return (
-                  <tr key={index} {...row.getRowProps()}>
-                    {row.cells.map((cell, index) => {
+                  <tr key={Date.now()} {...row.getRowProps()}>
+                    {row.cells.map((cell) => {
                       return (
-                        <td key={index} {...cell.getCellProps()}>
+                        <td key={Date.now()} {...cell.getCellProps()}>
                           {cell.render("Cell")}
                         </td>
                       );
@@ -250,6 +257,9 @@ const Findpost = () => {
             </tbody>
           </table>
         </div>
+      ) : (
+        <></>
+        // <HashLoader />
       )}
     </>
   );

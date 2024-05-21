@@ -1,6 +1,6 @@
 import ServicesList from "../components/services/ServicesList";
-import heroImage from "C:/web dev/Dbms_project/frontend/vite-project/src/assets/hero-img.jpg";
-import aboutus from "C:/web dev/Dbms_project/frontend/vite-project/src/assets/about-us.jpg";
+import heroImage from "../../src/assets/hero-img.jpg";
+import aboutus from "../../src/assets/about-us.jpg";
 import FaqList from "../components/Faq/FaqList";
 import { useState } from "react";
 import HashLoader from "react-spinners/HashLoader";

@@ -47,7 +47,7 @@ const PODashboard = () => {
           Transaction
         </div>
         <div>
-          <img src="src\assets\History.png" alt="" />
+          <img src="src\assets\history.png" alt="" />
           History
         </div>
       </div>
