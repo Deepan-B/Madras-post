@@ -2,7 +2,6 @@ import { Route, Routes } from "react-router-dom";
 import Home from "../pages/Home.jsx";
 import ProtectedRoutes from "./ProtectedRoutes.jsx";
 import Login from "../pages/Login.jsx";
-import Signup from "../pages/Signup.jsx";
 import Findpost from "../pages/Findpost.jsx";
 import Findpin from "../pages/Findpin.jsx";
 
@@ -18,6 +17,14 @@ import Addscheme from "../pages/Addscheme.jsx";
 import Addpostoffice from "../pages/Addpostoffice.jsx";
 import Hubdashboard from "../pages/Hubdashboard.jsx";
 import Hubupdate from "../pages/Hubupdate.jsx";
+import Signup from "../pages/Signup.jsx";
+import Services from "../pages/Services.jsx";
+import About from "../pages/About.jsx";
+import Contact from "../pages/Contact.jsx";
+import Stamps from "../pages/Stamps.jsx";
+import Schemes from "../pages/Schemes.jsx";
+import News from "../pages/News.jsx";
+import PostageCalculator from "../pages/PostageCalculator.jsx";
 
 const routes = () => {
   return (
@@ -26,8 +33,15 @@ const routes = () => {
       <Route path="/home" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Signup />} />
-      <Route path="/findpost" element={<Findpost />} />
-      <Route path="/findpin" element={<Findpin />} />
+      <Route path="/services" element={<Services />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/contact" element={<Contact />} />
+      <Route path="/stamps" element={<Stamps />} />
+      <Route path="/schemes" element={<Schemes />} />
+      <Route path="/news" element={<News />} />
+      <Route path="/postage-calculator" element={<PostageCalculator />} />
+      <Route path="/post-office-locator" element={<Findpost />} />
+      <Route path="/find-pincode" element={<Findpin />} />
       <Route path="/hubdashboard" element={<Hubdashboard />} />
       <Route path="/hubupdate" element={<Hubupdate />} />
 
@@ -45,9 +59,9 @@ const routes = () => {
       <Route
         path="/postoffice/:id"
         element={
-          <ProtectedRoutes
-            allowedRoles={["postoffice", "admin"]}
-          ></ProtectedRoutes>
+          <ProtectedRoutes allowedRoles={["postoffice", "admin"]}>
+            
+          </ProtectedRoutes>
         }
       />
       <Route
