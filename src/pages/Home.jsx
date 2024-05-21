@@ -14,17 +14,19 @@ import TimelineDot from "@mui/lab/TimelineDot";
 import { BASE_URL } from "../../config";
 
 const Home = () => {
-  const [parcel_id, setParcelid] = useState("");
+  const [parcelId, setParcelId] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const p1 = "new",
-    h1 = "sdds",
-    h2 = "adasadd",
-    p2 = "sdfwsd",
-    pstatusnum = 3;
+  const [details, setDetails] = useState({
+    p1: "",
+    h1: "",
+    h2: "",
+    p2: "",
+    pstatusnum: 0,
+  });
 
   const handleChange = (e) => {
-    setParcelid(e.target.value);
+    setParcelId(e.target.value);
   };
 
   const handleSubmit = async (e) => {
@@ -33,11 +35,11 @@ const Home = () => {
 
     try {
       const res = await fetch(`${BASE_URL}/customer/parcel/find`, {
-        method: "post",
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ parcel_id: parcel_id }),
+        body: JSON.stringify({ parcel_id: parcelId }),
       });
 
       const result = await res.json();
@@ -46,22 +48,29 @@ const Home = () => {
         throw new Error(result.message);
       }
 
-      // console.log(result);
+      const { from_place, from_hub_name, to_hub_name, to_place, status_no } =
+        result.data;
 
-      setLoading(false);
+      setDetails({
+        p1: from_place,
+        h1: from_hub_name,
+        h2: to_hub_name,
+        p2: to_place,
+        pstatusnum: status_no,
+      });
+
       toast.success(result.message);
     } catch (err) {
       toast.error(err.message);
+    } finally {
       setLoading(false);
     }
-
-    setLoading(false);
   };
 
   return (
     <>
-      {/* // hero section */}
-      <section className="max-w-[1550px] mb-5 ">
+      {/* Hero section */}
+      <section className="max-w-[1550px] mb-5">
         <div
           className="hero-section h-screen md:h-[90vh] w-full bg-center md:bg-cover rounded-3xl"
           style={{
@@ -76,30 +85,31 @@ const Home = () => {
             <h1 className="text-5xl md:text-7xl xl:text-8xl text-center md:text-left font-medium md:ml-5 md:mt-4">
               Time to Revolutionize
             </h1>
-            <h1 className="text-5xl md:text-7xl xl:text-8xl text-center  md:text-left font-medium ml-5 mt-4">
+            <h1 className="text-5xl md:text-7xl xl:text-8xl text-center md:text-left font-medium ml-5 mt-4">
               Your
             </h1>
-            <h1 className="text-5xl md:text-7xl xl:text-8xl text-center  md:text-left font-medium ml-5 mt-4">
+            <h1 className="text-5xl md:text-7xl xl:text-8xl text-center md:text-left font-medium ml-5 mt-4">
               Mailing
             </h1>
-            <h1 className="text-5xl md:text-7xl xl:text-8xl text-center  md:text-left font-medium ml-5 mt-4">
+            <h1 className="text-5xl md:text-7xl xl:text-8xl text-center md:text-left font-medium ml-5 mt-4">
               System
             </h1>
           </div>
         </div>
       </section>
-      {/* //parcel tracking  */}
+
+      {/* Parcel tracking */}
       <h2 className="text-6xl text-center mt-4">Find your Postage</h2>
       <section className="mb-5 mt-20 h-[70vh] flex flex-col md:flex-row container gap-4">
-        <div className="mx-auto flex justify-center  md:w-1/3">
+        <div className="mx-auto flex justify-center md:w-1/3">
           <form
             onSubmit={handleSubmit}
-            className="flex items-center  justify-center mx-2 w-full"
+            className="flex items-center justify-center mx-2 w-full"
           >
             <input
               type="text"
               className="px-6 py-3"
-              value={parcel_id}
+              value={parcelId}
               onChange={handleChange}
               placeholder="Enter Parcel-id"
             />
@@ -121,41 +131,43 @@ const Home = () => {
               <TimelineItem>
                 <TimelineSeparator>
                   <TimelineDot
-                    variant={pstatusnum < 1 ? "outlined" : "default"}
+                    variant={details.pstatusnum < 1 ? "outlined" : "default"}
                     color="secondary"
                   />
                   <TimelineConnector />
                 </TimelineSeparator>
-                <TimelineContent>{p1}</TimelineContent>
+                <TimelineContent>{details.p1}</TimelineContent>
               </TimelineItem>
               <TimelineItem>
                 <TimelineSeparator>
                   <TimelineDot
-                    variant={pstatusnum < 2 ? "outlined" : "default"}
+                    variant={details.pstatusnum < 2 ? "outlined" : "default"}
                     color="primary"
                   />
+
                   <TimelineConnector />
                 </TimelineSeparator>
-                <TimelineContent>{h1}</TimelineContent>
+                <TimelineContent>{details.h1}</TimelineContent>
               </TimelineItem>
               <TimelineItem>
                 <TimelineSeparator>
                   <TimelineDot
-                    variant={pstatusnum < 3 ? "outlined" : "default"}
+                    variant={details.pstatusnum < 3 ? "outlined" : "default"}
                     color="primary"
                   />
+
                   <TimelineConnector />
                 </TimelineSeparator>
-                <TimelineContent>{h2}</TimelineContent>
+                <TimelineContent>{details.h2}</TimelineContent>
               </TimelineItem>
               <TimelineItem>
                 <TimelineSeparator>
                   <TimelineDot
-                    variant={pstatusnum < 4 ? "outlined" : "default"}
+                    variant={details.pstatusnum < 4 ? "outlined" : "default"}
                     color="primary"
                   />
                 </TimelineSeparator>
-                <TimelineContent>{p2}</TimelineContent>
+                <TimelineContent>{details.p2}</TimelineContent>
               </TimelineItem>
             </Timeline>
           )}
