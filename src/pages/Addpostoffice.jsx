@@ -110,14 +110,6 @@ function Addpostoffice() {
                 >
                   <label htmlFor="value">Enter Hub Office Name</label>
                 </td>
-                <td
-                  style={{
-                    padding: "0 0 0 10px",
-                    width: "50%",
-                  }}
-                >
-                  <label htmlFor="ipType">Enter Parcel Type</label>
-                </td>
                 <td>
                   <select
                     name="ipType"
@@ -130,8 +122,16 @@ function Addpostoffice() {
                     }}
                   >
                     <option value="Select">Select</option>
-                    <option value="express">Express Post</option>
-                    <option value="standard">Standard post</option>
+                    <option value="express">CHENNAI</option>
+                    <option value="standard">MADURAI</option>
+                    <option value="standard">THANJAVUR</option>
+                    <option value="standard">RAMANATHAPURAM</option>
+                    <option value="standard">SALEM</option>
+                    <option value="standard">TRICHY</option>
+                    <option value="standard">COIMBATORE</option>
+                    <option value="standard">TIRUNELVELI</option>
+                    <option value="standard">VILLUPURAM</option>
+                    <option value="standard">VELLORE</option>
                   </select>
                 </td>
               </tr>

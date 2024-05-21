@@ -25,6 +25,7 @@ import Stamps from "../pages/Stamps.jsx";
 import Schemes from "../pages/Schemes.jsx";
 import News from "../pages/News.jsx";
 import PostageCalculator from "../pages/PostageCalculator.jsx";
+import HubHistory from "../pages/Hubhistory.jsx";
 
 const routes = () => {
   return (
@@ -44,6 +45,7 @@ const routes = () => {
       <Route path="/findpin" element={<Findpin />} />
       <Route path="/hubdashboard" element={<Hubdashboard />} />
       <Route path="/hubupdate" element={<Hubupdate />} />
+      <Route path="/hubhistory" element={<HubHistory />} />
 
       <Route path="/parcelhistory" element={<ParcelHistory />} />
       <Route path="/addpostoffice" element={<Addpostoffice />} />
@@ -59,9 +61,9 @@ const routes = () => {
       <Route
         path="/postoffice/:id"
         element={
-          <ProtectedRoutes allowedRoles={["postoffice", "admin"]}>
-            
-          </ProtectedRoutes>
+          <ProtectedRoutes
+            allowedRoles={["postoffice", "admin"]}
+          ></ProtectedRoutes>
         }
       />
       <Route

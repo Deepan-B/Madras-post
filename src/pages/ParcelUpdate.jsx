@@ -305,6 +305,17 @@ function ParcelUpdate() {
         </div>
       </div>
 
+      <div
+        style={{
+          fontSize: "24p",
+          width: "max-content",
+          margin: "auto",
+          marginBottom: "80px",
+        }}
+      >
+        <h1>The details of the parcels yet to come</h1>
+      </div>
+
       <div className="datatable">
         <table {...getTableBodyProps()}>
           <thead className="thead">
