@@ -7,44 +7,42 @@ import { useContext, useEffect, useState } from "react";
 import { authContext } from "../../context/AuthContext";
 
 const PODashboard = () => {
-    let parcelsSent;
-    let parcelsReceived = 2;
-    let postOfficeName = "Guindy";
-    let postOfficeId = 2323;
-    let postOfficePincode = 600012;
-    const [ans1 , setans1] = useState(0)
+  let parcelsSent;
+  let parcelsReceived = 2;
+  let postOfficeName = "Guindy";
+  let postOfficeId = 2323;
+  let postOfficePincode = 600012;
+  const [ans1, setans1] = useState(0);
 
-    const {user} = useContext(authContext)
-    console.log(user.id);
+  const { user } = useContext(authContext);
+  console.log(user.id);
 
-useEffect(() => {
-  const fetchParcels = async () => {
-    try {
-      const response = await fetch(`${BASE_URL}/post-office/received`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ post_office_id: 41 }),
-      });
+  useEffect(() => {
+    const fetchParcels = async () => {
+      try {
+        const response = await fetch(`${BASE_URL}/post-office/received`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ post_office_id: 41 }),
+        });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        parcelsSent = await response.json();
+        setans1(parcelsSent.parcelIds.length);
+
+        console.log(parcelsSent.parcelIds.length);
+      } catch (error) {
+        console.log(error);
       }
-
-      parcelsSent = await response.json();
-      setans1( parcelsSent.parcelIds.length);
-
-      console.log(parcelsSent.parcelIds.length);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
+    };
 
     fetchParcels();
-}, []); 
-
+  }, []);
 
   // const backcall = async() => {
 
@@ -79,8 +77,6 @@ useEffect(() => {
   //     // setLoading(false);
   //   }
   // };
-
-
 
   return (
     <>
