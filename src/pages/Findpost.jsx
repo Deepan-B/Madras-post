@@ -1,59 +1,70 @@
-import React, { useState, useMemo } from "react";
-
-import fakeData from "../toLearn/data.json";
+import { useState, useMemo } from "react";
+import { toast } from "react-toastify";
 import { useTable } from "react-table";
-// import header from "../components/Header";
+import { BASE_URL } from "../../config";
 import "./table.css";
+import { HashLoader } from "react-spinners";
 
 const Findpost = () => {
-  const obj1 = {
-    Select: "Details",
-    Hub: "Hub Name",
-    pid: "Post Office Id",
-    Main: "Main Post Office Name",
-    Post: "Post Office Name",
-    Phone: "Phone number",
-    Pin: "Pin Code",
+  let vari ;
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({ key: "", value: "" });
+
+
+  const makenull = () => {
+    setFormData({ key: "", value: "" });
   };
 
-  const [svalue, setsvalue] = useState("Details");
+  const handleFormDataChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
 
-  function updatestate(e) {
-    setsvalue(obj1[e.target.value]);
-  }
-
-  const data = useMemo(() => fakeData, []);
-
-  const columnss = [
-    {
-      Header: "ID",
-      accessor: "id",
-    },
-    {
-      Header: "First Name",
-      accessor: "first_name",
-    },
-    {
-      Header: "last Name",
-      accessor: "last_name",
-    },
-    {
-      Header: "Email",
-      accessor: "email",
-    },
-    {
-      Header: "Gender",
-      accessor: "gender",
-    },
-    {
-      Header: "University",
-      accessor: "university",
-    },
-  ];
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+  
+    try {
+      const res = await fetch(`${BASE_URL}/post-office/find`, {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+  
+      const result = await res.json();
+      if (!res.ok) {
+        throw new Error(result.message);
+      }
+  
+      // Assuming your API response data is an array of objects, you can directly set it to state
+      setData(result.data);
+      vari = result.data
+      console.log(data);
+      setLoading(false);
+      toast.success(result.message);
+    } catch (err) {
+      toast.error(err.message);
+      setLoading(false);
+    }
+  };
+  
+  const columnss = useMemo(
+    () => [
+      {
+        Header: "Phone Number",
+        accessor: "phone_no",
+      },
+    ],
+    []
+  );
 
   const columns = useMemo(() => columnss, []);
-
-  const tableInst = useTable({ columns, data });
+  const tableInst = useTable({ columns, vari });
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     tableInst;
@@ -68,7 +79,7 @@ const Findpost = () => {
           maxWidth: "750px",
           minWidth: "550px",
           background: "#f5f5f5",
-          margin: "80px auto 100px auto ",
+          margin: "80px auto 100px auto",
         }}
       >
         <div
@@ -112,13 +123,14 @@ const Findpost = () => {
                     width: "50%",
                   }}
                 >
-                  <label htmlFor="ipType">Choose an option</label>
+                  <label htmlFor="key">Choose an option</label>
                 </td>
                 <td>
                   <select
-                    name="ipType"
-                    id="ipType"
-                    onChange={updatestate}
+                    name="key"
+                    id="key"
+                    value={formData.key}
+                    onChange={handleFormDataChange}
                     style={{
                       border: "2px solid #e3e3e3",
                       width: "95%",
@@ -127,12 +139,12 @@ const Findpost = () => {
                     }}
                   >
                     <option value="Select">Select</option>
-                    <option value="Hub">Hub Name</option>
-                    <option value="pid">Post Office Id</option>
-                    <option value="Main">Main Post Office</option>
-                    <option value="Post">Post Office</option>
-                    <option value="Phone">Phone Number</option>
-                    <option value="Pin">Pin Code</option>
+                    <option value="main_post">Hub Name</option>
+                    <option value="post_office_id">Post Office Id</option>
+                    <option value="main_post">Main Post Office</option>
+                    <option value="sub_post">Sub Post Office</option>
+                    <option value="phone_no">Phone Number</option>
+                    <option value="pincode">Pin Code</option>
                   </select>
                 </td>
               </tr>
@@ -147,10 +159,13 @@ const Findpost = () => {
                     width: "50%",
                   }}
                 >
-                  <label htmlFor="value">Enter {svalue}</label>
+                  <label htmlFor="value">Enter {formData.key}</label>
                 </td>
                 <td>
                   <input
+                    name="value"
+                    value={formData.value}
+                    onChange={handleFormDataChange}
                     type="text"
                     id="value"
                     style={{
@@ -172,12 +187,12 @@ const Findpost = () => {
           }}
         >
           <button
+            onClick={makenull}
             style={{
               border: "2px solid #e3e3e3",
               backgroundColor: "#ffb1b1",
               padding: "5px 12px",
               borderRadius: "3px",
-              // float: "right",
               margin: "10px",
               width: "80px",
             }}
@@ -185,6 +200,7 @@ const Findpost = () => {
             Reset
           </button>
           <button
+            onClick={submitHandler}
             style={{
               border: "2px solid #e3e3e3",
               backgroundColor: "#ffb1b1",
@@ -198,35 +214,43 @@ const Findpost = () => {
           </button>
         </div>
       </div>
-      <div class="datatable">
-        <table {...getTableBodyProps()}>
-          <thead class="thead">
-            {headerGroups.map((headerGroup) => (
-              <tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
-                  <th {...column.getHeaderProps()}>
-                    {column.render("Header")}
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody {...getTableBodyProps()}>
-            {rows.map((row) => {
-              prepareRow(row);
-              return (
-                <tr {...row.getRowProps()}>
-                  {row.cells.map((cell) => {
-                    return (
-                      <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                    );
-                  })}
+      {loading ? (
+        <div className="loader">
+          <HashLoader size={50} color={"#36d7b7"} loading={loading} />
+        </div>
+      ) : (
+        <div className="datatable">
+          <table {...getTableProps()}>
+            <thead className="thead">
+              {headerGroups.map((headerGroup, index) => (
+                <tr key={index} {...headerGroup.getHeaderGroupProps()}>
+                  {headerGroup.headers.map((column, index) => (
+                    <th key={index} {...column.getHeaderProps()}>
+                      {column.render("Header")}
+                    </th>
+                  ))}
                 </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+              ))}
+            </thead>
+            <tbody {...getTableBodyProps()}>
+              {rows.map((row, index) => {
+                prepareRow(row);
+                return (
+                  <tr key={index} {...row.getRowProps()}>
+                    {row.cells.map((cell, index) => {
+                      return (
+                        <td key={index} {...cell.getCellProps()}>
+                          {cell.render("Cell")}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      )}
     </>
   );
 };

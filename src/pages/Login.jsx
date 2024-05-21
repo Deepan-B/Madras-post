@@ -36,10 +36,6 @@ const Login = () => {
 
       const result = await res.json();
 
-      // if (!res.ok) {
-      //   throw new Error(result.message);
-      // }
-
       console.log(result);
 
       dispatch({
@@ -50,14 +46,14 @@ const Login = () => {
           type: result.data.type,
         },
       });
-
+      navigate("/home");
       setLoading(false);
       toast.success(result.message);
       
     } catch (err) {
-      // toast.error(err.message);
-      // setLoading(false);
-      navigate("/home");
+      toast.error(err.message);
+      setLoading(false);
+      navigate("/login");
     }
   };
 
