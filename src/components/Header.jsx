@@ -16,10 +16,6 @@ const navLinks = [
     display: "Services",
   },
   {
-    path: "/about",
-    display: "About",
-  },
-  {
     path: "/contact",
     display: "Contact Us",
   },
