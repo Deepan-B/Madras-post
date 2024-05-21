@@ -4,11 +4,8 @@ import ProtectedRoutes from "./ProtectedRoutes.jsx";
 import Login from "../pages/Login.jsx";
 import Findpost from "../pages/Findpost.jsx";
 import Findpin from "../pages/Findpin.jsx";
-
 import ParcelUpdate from "../pages/ParcelUpdate.jsx";
 import PODashboard from "../pages/PODashboard.jsx";
-import { CopyNGo } from "../pages/CopyNGo.jsx";
-import Dynamo from "../pages/DynamoTable.jsx";
 import ParcelHistory from "../pages/ParcelHistory.jsx";
 import POtransaction from "../pages/POtransaction.jsx";
 import Admindash from "../pages/Admindash.jsx";
@@ -43,42 +40,42 @@ const routes = () => {
       <Route path="/postage-calculator" element={<PostageCalculator />} />
       <Route path="/post-office-locator" element={<Findpost />} />
       <Route path="/find-pincode" element={<Findpin />} />
-      <Route path="/hubdashboard" element={<Hubdashboard />} />
-      <Route path="/hubupdate" element={<Hubupdate />} />
-      <Route path="/hubhistory" element={<HubHistory />} />
-
-      <Route path="/parcelhistory" element={<ParcelHistory />} />
-      <Route path="/addpostoffice" element={<Addpostoffice />} />
-      <Route path="/addscheme" element={<Addscheme />} />
-      <Route path="/potransaction" element={<POtransaction />} />
-      <Route path="/admindash" element={<Admindash />} />
-      <Route path="/addstamp" element={<Addstamp />} />
-      <Route path="/parcelupdate" element={<ParcelUpdate />} />
-      <Route path="/podashboard" element={<PODashboard />} />
-      <Route path="/copyngo" element={<CopyNGo />} />
-      <Route path="/dynamo" element={<Dynamo />} />
 
       <Route
-        path="/postoffice/:id"
+        path="/postoffice/:id/*"
         element={
-          <ProtectedRoutes
-            allowedRoles={["postoffice", "admin"]}
-          ></ProtectedRoutes>
-        }
-      />
-      <Route
-        path="/hub/:id"
-        element={
-          <ProtectedRoutes allowedRoles={["hubofficer", "admin"]}>
-            {/* <Dashboard /> */}
+          <ProtectedRoutes allowedRoles={["postoffice", "admin"]}>
+            <Routes>
+              <Route path="/parcelhistory" element={<ParcelHistory />} />
+              <Route path="/potransaction" element={<POtransaction />} />
+              <Route path="/parcelupdate" element={<ParcelUpdate />} />
+              <Route path="/podashboard" element={<PODashboard />} />
+            </Routes>
           </ProtectedRoutes>
         }
       />
+
       <Route
-        path="/admin"
+        path="/hub/:id/*"
         element={
           <ProtectedRoutes allowedRoles={["hubofficer", "admin"]}>
-            {/* <Dashboard /> */}
+            <Routes>
+              <Route path="hubdashboard" element={<Hubdashboard />} />
+              <Route path="hubupdate" element={<Hubupdate />} />
+              <Route path="hubhistory" element={<HubHistory />} />
+            </Routes>
+          </ProtectedRoutes>
+        }
+      />
+
+      <Route
+        path="/admin/*"
+        element={
+          <ProtectedRoutes allowedRoles={["admin"]}>
+            <Route path="/addpostoffice" element={<Addpostoffice />} />
+            <Route path="/addscheme" element={<Addscheme />} />
+            <Route path="/admindash" element={<Admindash />} />
+            <Route path="/addstamp" element={<Addstamp />} />
           </ProtectedRoutes>
         }
       />
