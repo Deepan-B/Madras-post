@@ -16,6 +16,7 @@ import { BASE_URL } from "../../config";
 const Home = () => {
   const [parcelId, setParcelId] = useState("");
   const [loading, setLoading] = useState(false);
+
   const [details, setDetails] = useState({
     p1: "",
     h1: "",
@@ -47,7 +48,8 @@ const Home = () => {
         throw new Error(result.message);
       }
 
-      const { from_place, from_hub_name, to_hub_name, to_place, status_no } = result.data;
+      const { from_place, from_hub_name, to_hub_name, to_place, status_no } =
+        result.data;
 
       setDetails({
         p1: from_place,
@@ -76,7 +78,10 @@ const Home = () => {
             fontFamily: "Poetsen One",
           }}
         >
-          <div className="absolute w-full mt-[38px] md:mt-0" style={{ WebkitTextStroke: "2px black", color: "transparent" }}>
+          <div
+            className="absolute w-full mt-[38px] md:mt-0"
+            style={{ WebkitTextStroke: "2px black", color: "transparent" }}
+          >
             <h1 className="text-5xl md:text-7xl xl:text-8xl text-center md:text-left font-medium md:ml-5 md:mt-4">
               Time to Revolutionize
             </h1>
@@ -97,7 +102,10 @@ const Home = () => {
       <h2 className="text-6xl text-center mt-4">Find your Postage</h2>
       <section className="mb-5 mt-20 h-[70vh] flex flex-col md:flex-row container gap-4">
         <div className="mx-auto flex justify-center md:w-1/3">
-          <form onSubmit={handleSubmit} className="flex items-center justify-center mx-2 w-full">
+          <form
+            onSubmit={handleSubmit}
+            className="flex items-center justify-center mx-2 w-full"
+          >
             <input
               type="text"
               className="px-6 py-3"
@@ -105,7 +113,10 @@ const Home = () => {
               onChange={handleChange}
               placeholder="Enter Parcel-id"
             />
-            <button className="lg:px-6 lg:py-3 px-2 py-1 text-white bg-green-500 text-sm" type="submit">
+            <button
+              className="lg:px-6 lg:py-3 px-2 py-1 text-white bg-green-500 text-sm"
+              type="submit"
+            >
               Find the Status
             </button>
           </form>
@@ -119,28 +130,42 @@ const Home = () => {
             <Timeline position="alternate" className="text-[20px]">
               <TimelineItem>
                 <TimelineSeparator>
-                  <TimelineDot variant={details.pstatusnum < 1 ? "outlined" : "default"} color="secondary" />
+                  <TimelineDot
+                    variant={details.pstatusnum < 1 ? "outlined" : "default"}
+                    color="secondary"
+                  />
                   <TimelineConnector />
                 </TimelineSeparator>
                 <TimelineContent>{details.p1}</TimelineContent>
               </TimelineItem>
               <TimelineItem>
                 <TimelineSeparator>
-                  <TimelineDot variant={details.pstatusnum < 2 ? "outlined" : "default"} color="primary" />
+                  <TimelineDot
+                    variant={details.pstatusnum < 2 ? "outlined" : "default"}
+                    color="primary"
+                  />
+
                   <TimelineConnector />
                 </TimelineSeparator>
                 <TimelineContent>{details.h1}</TimelineContent>
               </TimelineItem>
               <TimelineItem>
                 <TimelineSeparator>
-                  <TimelineDot variant={details.pstatusnum < 3 ? "outlined" : "default"} color="primary" />
+                  <TimelineDot
+                    variant={details.pstatusnum < 3 ? "outlined" : "default"}
+                    color="primary"
+                  />
+
                   <TimelineConnector />
                 </TimelineSeparator>
                 <TimelineContent>{details.h2}</TimelineContent>
               </TimelineItem>
               <TimelineItem>
                 <TimelineSeparator>
-                  <TimelineDot variant={details.pstatusnum < 4 ? "outlined" : "default"} color="primary" />
+                  <TimelineDot
+                    variant={details.pstatusnum < 4 ? "outlined" : "default"}
+                    color="primary"
+                  />
                 </TimelineSeparator>
                 <TimelineContent>{details.p2}</TimelineContent>
               </TimelineItem>
@@ -189,4 +214,3 @@ const Home = () => {
 };
 
 export default Home;
-
