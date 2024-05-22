@@ -1,11 +1,8 @@
 import React, { useState, useMemo } from "react";
-import "./table.css";
 import fakeData from "../toLearn/data.json";
-import fakeData1 from "../toLearn/data copy.json";
-
 import { useTable } from "react-table";
 
-function Hubupdate() {
+function HubHistory() {
   const data = useMemo(() => fakeData, []);
 
   const columnss = [
@@ -37,6 +34,7 @@ function Hubupdate() {
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     tableInst;
+
   return (
     <>
       <a href="" className="dashlink">
@@ -65,7 +63,7 @@ function Hubupdate() {
               lineHeight: "50px",
             }}
           >
-            Update Postage
+            Show History
           </span>
         </div>
         <div
@@ -94,19 +92,23 @@ function Hubupdate() {
                     width: "50%",
                   }}
                 >
-                  <label htmlFor="ipType">Parcel ID</label>
+                  <label htmlFor="ipType">Type</label>
                 </td>
                 <td>
-                  <input
-                    type="text"
-                    id="value"
+                  <select
+                    name="ipType"
+                    id="ipType"
                     style={{
+                      border: "2px solid #e3e3e3",
                       width: "95%",
                       height: "28px",
                       borderRadius: "2px",
-                      border: "2px solid #e3e3e3",
                     }}
-                  />
+                  >
+                    <option value="Select">Select</option>
+                    <option value="szent">Sent</option>
+                    <option value="received">Received</option>
+                  </select>
                 </td>
               </tr>
             </tbody>
@@ -125,10 +127,10 @@ function Hubupdate() {
               padding: "5px 5px",
               borderRadius: "3px",
               margin: "10px",
-              width: "90px",
+              width: "80px",
             }}
           >
-            Received
+            Show
           </button>
         </div>
       </div>
@@ -165,4 +167,5 @@ function Hubupdate() {
     </>
   );
 }
-export default Hubupdate;
+
+export default HubHistory;

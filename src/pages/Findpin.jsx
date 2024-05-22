@@ -1,61 +1,84 @@
-import React, { useState, useMemo } from "react";
-
-import fakeData from "../toLearn/data.json";
+import { useState, useMemo } from "react";
 import { useTable } from "react-table";
-// import header from "../components/Header";
+import { toast } from "react-toastify";
 import "./table.css";
+import { BASE_URL } from "../../config";
+import { HashLoader } from "react-spinners";
 
 const Findpin = () => {
-  const obj1 = {
-    Select: "Details",
-    Hub: "Hub Name",
-    pid: "Post Office Id",
-    Main: "Main Post Office Name",
-    Post: "Post Office Name",
-    Phone: "Phone number",
+  const [formData, setFormData] = useState({ ipType: "", value: "" });
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState([]);
+
+  const handleFormDataChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
   };
 
-  const [svalue, setsvalue] = useState("Details");
+  const submitHandler = async () => {
+    setLoading(true);
 
-  function updatestate(e) {
-    setsvalue(obj1[e.target.value]);
-  }
+    try {
+      const res = await fetch(`${BASE_URL}/post-office/find`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
-  const data = useMemo(() => fakeData, []);
+      const result = await res.json();
+      if (!res.ok) {
+        throw new Error(result.message);
+      }
 
-  const columnss = [
-    {
-      Header: "ID",
-      accessor: "id",
-    },
-    {
-      Header: "First Name",
-      accessor: "first_name",
-    },
-    {
-      Header: "last Name",
-      accessor: "last_name",
-    },
-    {
-      Header: "Email",
-      accessor: "email",
-    },
-    {
-      Header: "Gender",
-      accessor: "gender",
-    },
-    {
-      Header: "University",
-      accessor: "university",
-    },
-  ];
+      setData(result.data);
+      setLoading(false);
+      console.log(data);
+      toast.success(result.message);
+    } catch (err) {
+      toast.error(err.message);
+      setLoading(false);
+    }
+  };
 
-  const columns = useMemo(() => columnss, []);
+  const resetHandler = () => {
+    setFormData({ ipType: "", value: "" });
+    setData([]);
+  };
 
-  const tableInst = useTable({ columns, data });
+  const columns = useMemo(
+    () => [
+      {
+        Header: "Pincode",
+        accessor: "pincode", // Change this to match your data structure
+      },
+      {
+        Header: "Post Office Id",
+        accessor: "post_office_id", // Change this to match your data structure
+      },
+      {
+        Header: "Main Post Office Name",
+        accessor: "main_post", // Change this to match your data structure
+      },
+      {
+        Header: "Post Office Name",
+        accessor: "sub_post", // Change this to match your data structure
+      },
+      {
+        Header: "Phone Number",
+        accessor: "phone_no", // Change this to match your data structure
+      },
+    ],
+    []
+  );
+
+  const tableInstance = useTable({ columns, data });
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    tableInst;
+    tableInstance;
 
   return (
     <>
@@ -117,7 +140,8 @@ const Findpin = () => {
                   <select
                     name="ipType"
                     id="ipType"
-                    onChange={updatestate}
+                    onChange={handleFormDataChange}
+                    value={formData.ipType}
                     style={{
                       border: "2px solid #e3e3e3",
                       width: "95%",
@@ -125,12 +149,11 @@ const Findpin = () => {
                       borderRadius: "2px",
                     }}
                   >
-                    <option value="Select">Select</option>
-                    <option value="Hub">Hub Name</option>
-                    <option value="pid">Post Office Id</option>
-                    <option value="Main">Main Post Office</option>
-                    <option value="Post">Post Office</option>
-                    <option value="Phone">Phone Number</option>
+                    <option value="">Select</option>
+                    <option value="post_office_id">Post Office Id</option>
+                    <option value="main_post">Main Post Office</option>
+                    <option value="sub_post">Post Office</option>
+                    <option value="phone_no">Phone Number</option>
                   </select>
                 </td>
               </tr>
@@ -145,11 +168,14 @@ const Findpin = () => {
                     width: "50%",
                   }}
                 >
-                  <label htmlFor="value">Enter {svalue}</label>
+                  <label htmlFor="value">Enter {formData.ipType}</label>
                 </td>
                 <td>
                   <input
                     type="text"
+                    name="value"
+                    onChange={handleFormDataChange}
+                    value={formData.value}
                     id="value"
                     style={{
                       width: "95%",
@@ -170,12 +196,12 @@ const Findpin = () => {
           }}
         >
           <button
+            onClick={resetHandler}
             style={{
               border: "2px solid #e3e3e3",
               backgroundColor: "#ffb1b1",
               padding: "5px 12px",
               borderRadius: "3px",
-              // float: "right",
               margin: "10px",
               width: "80px",
             }}
@@ -183,6 +209,7 @@ const Findpin = () => {
             Reset
           </button>
           <button
+            onClick={submitHandler}
             style={{
               border: "2px solid #e3e3e3",
               backgroundColor: "#ffb1b1",
@@ -196,35 +223,42 @@ const Findpin = () => {
           </button>
         </div>
       </div>
-      <div class="datatable">
-        <table {...getTableBodyProps()}>
-          <thead class="thead">
-            {headerGroups.map((headerGroup) => (
-              <tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
-                  <th {...column.getHeaderProps()}>
-                    {column.render("Header")}
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody {...getTableBodyProps()}>
-            {rows.map((row) => {
-              prepareRow(row);
-              return (
-                <tr {...row.getRowProps()}>
-                  {row.cells.map((cell) => {
-                    return (
-                      <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                    );
-                  })}
+      {data.length > 0 ? (
+        <div className="datatable">
+          <table {...getTableProps()}>
+            <thead className="thead">
+              {headerGroups.map((headerGroup, index) => (
+                <tr key={index} {...headerGroup.getHeaderGroupProps()}>
+                  {headerGroup.headers.map((column) => (
+                    <th key={Date.now()} {...column.getHeaderProps()}>
+                      {column.render("Header")}
+                    </th>
+                  ))}
                 </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+              ))}
+            </thead>
+            <tbody {...getTableBodyProps()}>
+              {rows.map((row) => {
+                prepareRow(row);
+                return (
+                  <tr key={Date.now()} {...row.getRowProps()}>
+                    {row.cells.map((cell) => {
+                      return (
+                        <td key={Date.now()} {...cell.getCellProps()}>
+                          {cell.render("Cell")}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <></>
+        // <HashLoader />
+      )}
     </>
   );
 };
